@@ -1,0 +1,17 @@
+#!/bin/bash
+USER_UID=$(id -u)
+
+docker run --rm -ti --name "gnuradio" --privileged\
+  --net=host --env="DISPLAY"\
+  --volume="$HOME/.Xauthority:/root/.Xauthority:rw"\
+  -v "$(pwd)/persistent_storage":/home/student/persistent\
+  -v /var/run/dbus:/var/run/dbus\
+  --device /dev/bus/usb\
+  --device /dev/snd\
+  -v /dev/snd:/dev/snd\
+   --volume=/run/user/${USER_UID}/pulse:/run/user/1000/pulse\
+  pzawad/gnuradio dbus-run-session tilix --session=persistent/tilix.json
+
+# docker run -rm -ti --net=host -e DISPLAY=$DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix --rm pzawad/ubuntu-x11 firefox
+# ls
+# -v /var/run/avahi-daemon/socket:/var/run/avahi-daemon/socket\
